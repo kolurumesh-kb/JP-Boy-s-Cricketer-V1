@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Players | JP Boy's Cricketer's</title>
+
+<style>
+*{box-sizing:border-box;font-family:Poppins,sans-serif}
+body{margin:0;background:#f4f6fb}
+header{background:linear-gradient(90deg,#1976d2,#512da8);color:#fff;padding:16px;display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:20px;font-weight:700}
+header a{background:rgba(255,255,255,.25);color:#fff;padding:7px 14px;border-radius:20px;text-decoration:none;font-weight:600}
+
+.container{max-width:1200px;margin:25px auto;padding:0 15px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.card{background:#fff;border-radius:18px;padding:18px;box-shadow:0 10px 25px rgba(0,0,0,.12);text-align:center}
+.card img{width:110px;height:110px;border-radius:50%;object-fit:cover;border:3px solid #512da8;margin-bottom:10px}
+.card h3{margin:6px 0;font-size:18px;color:#333}
+.card p{margin:4px 0;font-size:14px;color:#555}
+.role{display:inline-block;margin-top:6px;padding:4px 10px;border-radius:20px;background:#e3f2fd;color:#1976d2;font-size:12px;font-weight:600}
+.top-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 16px 20px;
+  background: linear-gradient(90deg, #1976d2, #512da8);
+  color: #fff;
+}
+
+.title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.back-btn,
+.admin-btn {
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+footer {
+  height: 60px;
+  background: linear-gradient(90deg,#1976d2,#512da8);
+  color: #fff;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
+/* Announcement base */
+.announcement {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* Marquee effect */
+.marquee {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scroll 18s linear infinite;
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+/* Close button */
+.close-announce {
+  cursor: pointer;
+  margin-left: 12px;
+  font-size: 16px;
+}
+
+/* Alert types */
+.announcement.info {
+  background: linear-gradient(90deg, #ff9800, #f57c00);
+}
+
+
+
+.player-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.player-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.player-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #5b3cc4;
+}
+
+.player-card h3 {
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+.mobile {
+  color: #555;
+  margin: 6px 0;
+}
+
+.role {
+  background: #e3f2fd;
+  color: #1565c0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  display: inline-block;
+}
+
+
+</style>
+</head>
+<body>
+
+<!-- <header>
+  <a href="dashboard.html">← Back</a>
+  <h1>Registred Players</h1>
+   <a href="player-admin.html" id="adminLink" style="display:none">Admin</a>
+  <div></div>
+</header> -->
+
+<header class="top-header">
+  <a href="dashboard.html" class="back-btn">← Back</a>
+
+  <h1 class="title">Registered Players</h1>
+
+  <a href="player-admin.html" class="admin-btn" id="adminBtn" style="display:none">Admin</a>
+
+
+  <!-- <a href="player-admin.html" class="admin-btn">Admin</a> -->
+</header>
+
+<!-- Announcement Banner -->
+<div class="announcement info" id="announcement">
+  <div class="marquee">
+    <span>
+      📢 Welcome to JP Boy's Cricketer's official site! Site is under maintenance , so don't do any registration etc...
+    </span>
+  </div>
+  <span class="close-announce" onclick="closeAnnouncement()">✖</span>
+</div>
+
+<!-- <div class="container" id="players"></div> -->
+
+<div class="player-container" id="playerList"></div>
+
+
+<footer>
+  🏏 JP Boy's Cricketer's © 2026 | Designed by K B UMESH
+</footer>
+
+<script>
+
+//   const role = "admin"; 
+// // change to "admin" when admin logs in
+
+// if (role === "admin") {
+//   document.getElementById("adminLink").style.display = "block";
+// }
+
+/*
+DATA SOURCE
+----------
+This page READS player data only.
+Admin should save players into localStorage as "players".
+Example structure:
+[
+ { name:"Umesh", mobile:"9876543210", role:"Batsman", photo:"base64" }
+]
+*/
+
+// function loadPlayers(){
+//   const data = JSON.parse(localStorage.getItem('players') || '[]');
+//   const box = document.getElementById('players');
+//   box.innerHTML = '';
+
+//   if(data.length === 0){
+//     box.innerHTML = '<p>No players added yet.</p>';
+//     return;
+//   }
+
+//   data.forEach(p => {
+//     box.innerHTML += `
+//       <div class="card">
+//         <img src="${p.photo || 'https://via.placeholder.com/150'}" />
+//         <h3>${p.name}</h3>
+//         <p>📞 ${p.mobile}</p>
+//         <span class="role">${p.role}</span>
+//       </div>
+//     `;
+//   });
+// }
+
+// window.onload = loadPlayers;
+
+
+function loadPlayers(){
+  const data = JSON.parse(localStorage.getItem('players') || '[]');
+  const box = document.getElementById('players');
+  box.innerHTML = '';
+
+  if(data.length === 0){
+    box.innerHTML = '<p style="text-align:center">No players added yet.</p>';
+    return;
+  }
+
+  data.forEach(p => {
+    box.innerHTML += `
+      <div class="card">
+        <img src="${p.photo || 'https://via.placeholder.com/150'}" />
+        <h3>${p.name}</h3>
+        <p>📞 ${p.mobile}</p>
+        <span class="role">${p.role}</span>
+      </div>
+    `;
+  });
+}
+
+window.onload = loadPlayers;
+
+const role = "user"; 
+// set to "admin" only for admin login
+
+if (role === "admin") {
+  document.getElementById("adminBtn").style.display = "inline-block";
+}
+
+</script>
+
+<script>
+function closeAnnouncement() {
+  document.getElementById("announcement").style.display = "none";
+}
+</script>
+
+
+
+
+
+<script>
+  const playerList = document.getElementById("playerList");
+  const players = JSON.parse(localStorage.getItem("players")) || [];
+
+  if (players.length === 0) {
+    playerList.innerHTML = "<p>No players registered yet.</p>";
+  }
+
+  players.forEach(player => {
+    const card = document.createElement("div");
+    card.className = "player-card";
+
+    card.innerHTML = `
+      <img src="${player.photo}" class="player-img">
+      <h3>${player.name}</h3>
+      <p class="mobile">📞 ${player.mobile}</p>
+      <span class="role">${player.role}</span>
+    `;
+
+    playerList.appendChild(card);
+  });
+</script>
+
+
+</body>
+</html>
