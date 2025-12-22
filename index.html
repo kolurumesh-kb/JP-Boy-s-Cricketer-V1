@@ -674,125 +674,9 @@
 
 
 
-<!-- // document.getElementById("registerForm").addEventListener("submit", async (e) => {
-//   e.preventDefault();
-  
-//   const form = e.target;
-//   const formData = new FormData(form);
-
-//   try {
-//     const response = await fetch(SCRIPT_URL, {
-//       method: "POST",
-//       body: formData
-//     });
-
-//     const result = await response.json();
-//     if (result.status === "success") {
-//       alert("✅ Registration submitted successfully!");
-//       form.reset();
-//     } else {
-//       alert("⚠️ Submission failed: " + result.message);
-//     }
-//   } catch (error) {
-//     console.error("Submission error:", error);
-//     alert("❌ Failed to submit. Check your internet or Apps Script URL.");
-//   }
-// });
-
-// const form = document.getElementById("registrationForm");
-
-// form.addEventListener("submit", function (e) {
-//   e.preventDefault();
-
-//   // Collect form values
-//   const player = {
-//     name: document.getElementById("name").value,
-//     role: document.getElementById("role").value,
-//     mobile: document.getElementById("mobile").value,
-//     photo: document.getElementById("photoPreview").src
-//   };
-
-//   /* ===== SAVE TO LOCAL STORAGE ===== */
-//   const players = JSON.parse(localStorage.getItem("players")) || [];
-//   players.push(player);
-//   localStorage.setItem("players", JSON.stringify(players));
-
-//   /* ===== SAVE TO GOOGLE SHEET ===== */
-//   fetch("YOUR_APPS_SCRIPT_URL_HERE", {
-//     method: "POST",
-//     body: new FormData(form)
-//   })
-//   .then(() => {
-//     // ✅ ALWAYS treat as success
-//     alert("✅ Registration Successful!");
-//     form.reset();
-//     window.location.href = "player.html";
-//   })
-//   .catch(() => {
-//     // ❌ DO NOT show error (data already saved)
-//     alert("✅ Registration Successful!");
-//     window.location.href = "player.html";
-//   });
-// }); -->
 
 
-<!-- <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmpMboEZdzr4MTtaSzk3qQ3wZUWe4b5Yo7kHQLmTRVUARSxFpAO9y7G9DJKKM6zx434w/exec";
 
-document.getElementById("registrationForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const name = document.getElementById("name").value;
-  const mobile = document.getElementById("mobile").value;
-  const role = document.getElementById("role").value;
-  const photoInput = document.getElementById("photo");
-
-  const reader = new FileReader();
-  reader.onload = function () {
-
-    const player = {
-      name,
-      mobile,
-      role,
-      photo: reader.result
-    };
-
-    /* ===== SAVE TO LOCAL STORAGE (player.html) ===== */
-    const players = JSON.parse(localStorage.getItem("players")) || [];
-    players.push(player);
-    localStorage.setItem("players", JSON.stringify(players));
-
-    /* ===== SAVE TO GOOGLE SHEET ===== */
-    fetch("YOUR_APPS_SCRIPT_URL_HERE", {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(player)
-    })
-    .then(() => {
-
-      alert("Registration successful!");
-      // ✅ SUCCESS – no alert
-      // Redirect to dashboard
-      window.location.href = "dashboard.html";
-    })
-    .catch(() => {
-      // ❌ DO NOTHING (sheet already saved)
-      window.location.href = "dashboard.html";
-    });
-  };
-
-  if (photoInput.files[0]) {
-    reader.readAsDataURL(photoInput.files[0]);
-  } else {
-    reader.onload();
-  }
-});
-
-
-</script> -->
 
 <script>
 function closeAnnouncement() {
@@ -802,98 +686,57 @@ function closeAnnouncement() {
 
 
 
-<!-- /...adding the furture that if register dteails hould shown in player list / -->
+
 
 <!-- <script>
-  document.getElementById("registerForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxmpMboEZdzr4MTtaSzk3qQ3wZUWe4b5Yo7kHQLmTRVUARSxFpAO9y7G9DJKKM6zx434w/exec";
 
-    const name = document.getElementById("name").value;
-    const mobile = document.getElementById("mobile").value;
-    const role = document.getElementById("role").value;
-    const photoInput = document.getElementById("photo");
-
-    if (!photoInput.files[0]) {
-      alert("Please upload a photo");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function () {
-      const player = {
-        name,
-        mobile,
-        role,
-        photo: reader.result
-      };
-
-      let players = JSON.parse(localStorage.getItem("players")) || [];
-      players.push(player);
-      localStorage.setItem("players", JSON.stringify(players));
-
-      alert("Registration successful!");
-      window.location.href = "player.html";
-    };
-
-    reader.readAsDataURL(photoInput.files[0]);
-  });
-</script> -->
-
-<!-- <script>
 document.getElementById("registerForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const form = e.target;
   const formData = new FormData(form);
 
-  /* ===== SAVE PLAYER DATA FOR player.html ===== */
-  const name = document.getElementById("name").value;
-  const mobile = document.getElementById("mobile").value;
+  // ===== BASIC DATA (ONLY TEXT) =====
+  const name = document.getElementById("name").value.trim();
+  const mobile = document.getElementById("mobile").value.trim();
   const role = document.getElementById("playerType").value;
-  const photoInput = document.getElementById("playerPhoto");
 
-  if (!photoInput.files[0]) {
-    alert("Please upload player photo");
+  if (!name || !mobile || !role) {
+    alert("❌ Please fill all required fields");
     return;
   }
 
-  const reader = new FileReader();
-  reader.onload = async function () {
-    const player = {
-      name,
-      mobile,
-      role,
-      photo: reader.result
-    };
+  // ===== SAVE SMALL DATA TO localStorage =====
+  const players = JSON.parse(localStorage.getItem("players") || "[]");
 
-    let players = JSON.parse(localStorage.getItem("players")) || [];
-    players.push(player);
-    localStorage.setItem("players", JSON.stringify(players));
+  players.push({
+    name,
+    mobile,
+    role,
+    registeredAt: new Date().toISOString()
+  });
 
-    /* ===== SEND DATA TO GOOGLE SHEET ===== */
-    try {
-      const response = await fetch(SCRIPT_URL, {
-        method: "POST",
-        body: formData
-      });
+  localStorage.setItem("players", JSON.stringify(players));
 
-      const result = await response.json();
-      if (result.status === "success") {
-        alert("✅ Registration successful!");
-        form.reset();
-        window.location.href = "player.html";
-      } else {
-        alert("⚠️ Submission failed: " + result.message);
-      }
-    } catch (err) {
-      alert("❌ Network error. Try again.");
-      console.error(err);
-    }
-  };
+  // ===== SEND TO GOOGLE SHEET =====
+  try {
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: formData
+    });
+  } catch (error) {
+    console.warn("Sheet submit warning (ignored):", error);
+  }
 
-  reader.readAsDataURL(photoInput.files[0]);
+  // ===== SUCCESS FLOW =====
+  alert("✅ Registration successful!");
+  form.reset();
+  window.location.href = "dashboard.html";
 });
 </script> -->
+
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmpMboEZdzr4MTtaSzk3qQ3wZUWe4b5Yo7kHQLmTRVUARSxFpAO9y7G9DJKKM6zx434w/exec";
 
@@ -901,50 +744,32 @@ document.getElementById("registerForm").addEventListener("submit", async functio
   e.preventDefault();
 
   const form = e.target;
-  const formData = new FormData(form);
 
-  /* ===== SAVE DATA FOR player.html ===== */
-  const name = document.getElementById("name").value;
-  const mobile = document.getElementById("mobile").value;
-  const role = document.getElementById("playerType").value;
-  const photoInput = document.getElementById("playerPhoto");
-
-  if (!photoInput.files[0]) return;
-
-  const reader = new FileReader();
-  reader.onload = async function () {
-
-    // Save to localStorage
-    const player = {
-      name,
-      mobile,
-      role,
-      photo: reader.result
-    };
-
-    const players = JSON.parse(localStorage.getItem("players")) || [];
-    players.push(player);
-    localStorage.setItem("players", JSON.stringify(players));
-
-    /* ===== SEND TO GOOGLE SHEET ===== */
-    try {
-      await fetch(SCRIPT_URL, {
-        method: "POST",
-        body: formData
-      });
-    } catch (err) {
-      // ❌ IGNORE errors (Sheet often still saves)
-      console.warn("Sheet submit warning ignored", err);
-    }
-
-    // ✅ ALWAYS SUCCESS
-      alert("✅ Registration successful!")
-
-    form.reset();
-    window.location.href = "dashboard.html";
+  const player = {
+    name: document.getElementById("name").value,
+    mobile: document.getElementById("mobile").value,
+    role: document.getElementById("playerType").value
   };
 
-  reader.readAsDataURL(photoInput.files[0]);
+  /* ✅ Save SMALL data to localStorage */
+  const players = JSON.parse(localStorage.getItem("players") || "[]");
+  players.push(player);
+  localStorage.setItem("players", JSON.stringify(players));
+
+  /* ✅ Send full form (with images) to Google Sheet */
+  try {
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: new FormData(form)
+    });
+  } catch (e) {
+    console.warn("Sheet submit warning ignored");
+  }
+
+  alert("✅ Registration Successful!");
+  form.reset();
+
+  window.location.href = "dashboard.html";
 });
 </script>
 
