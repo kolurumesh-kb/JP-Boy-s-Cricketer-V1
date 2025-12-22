@@ -174,6 +174,27 @@ footer {
   <span class="close-announce" onclick="closeAnnouncement()">✖</span>
 </div>
 
+
+<div style="display:flex;justify-content:space-between;align-items:center;padding:15px 20px;">
+  <div>
+    <strong>Total Players:</strong> <span id="totalCount">0</span> |
+    🏏 Batsman: <span id="batsmanCount">0</span> |
+    🎯 Bowler: <span id="bowlerCount">0</span> |
+    🔁 All-Rounder: <span id="allrounderCount">0</span>
+  </div>
+
+  <button onclick="downloadPDF()" style="
+    background:#1976d2;
+    color:#fff;
+    border:none;
+    padding:8px 14px;
+    border-radius:20px;
+    cursor:pointer;
+    font-weight:600;">
+    ⬇ Download PDF
+  </button>
+</div>
+
 <!-- <div class="container" id="players"></div> -->
 
 <div class="player-container" id="playerList"></div>
@@ -183,74 +204,7 @@ footer {
   🏏 JP Boy's Cricketer's © 2026 | Designed by K B UMESH
 </footer>
 
-<script>
-
-//   const role = "admin"; 
-// // change to "admin" when admin logs in
-
-// if (role === "admin") {
-//   document.getElementById("adminLink").style.display = "block";
-// }
-
-/*
-DATA SOURCE
-----------
-This page READS player data only.
-Admin should save players into localStorage as "players".
-Example structure:
-[
- { name:"Umesh", mobile:"9876543210", role:"Batsman", photo:"base64" }
-]
-*/
-
-// function loadPlayers(){
-//   const data = JSON.parse(localStorage.getItem('players') || '[]');
-//   const box = document.getElementById('players');
-//   box.innerHTML = '';
-
-//   if(data.length === 0){
-//     box.innerHTML = '<p>No players added yet.</p>';
-//     return;
-//   }
-
-//   data.forEach(p => {
-//     box.innerHTML += `
-//       <div class="card">
-//         <img src="${p.photo || 'https://via.placeholder.com/150'}" />
-//         <h3>${p.name}</h3>
-//         <p>📞 ${p.mobile}</p>
-//         <span class="role">${p.role}</span>
-//       </div>
-//     `;
-//   });
-// }
-
-// window.onload = loadPlayers;
-
-
-// function loadPlayers(){
-//   const data = JSON.parse(localStorage.getItem('players') || '[]');
-//   const box = document.getElementById('players');
-//   box.innerHTML = '';
-
-//   if(data.length === 0){
-//     box.innerHTML = '<p style="text-align:center">No players added yet.</p>';
-//     return;
-//   }
-
-//   data.forEach(p => {
-//     box.innerHTML += `
-//       <div class="card">
-//         <img src="${p.photo || 'https://via.placeholder.com/150'}" />
-//         <h3>${p.name}</h3>
-//         <p>📞 ${p.mobile}</p>
-//         <span class="role">${p.role}</span>
-//       </div>
-//     `;
-//   });
-// }
-
-// window.onload = loadPlayers;
+<!-- <script>
 
 const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxmpMboEZdzr4MTtaSzk3qQ3wZUWe4b5Yo7kHQLmTRVUARSxFpAO9y7G9DJKKM6zx434w/exec";
 
@@ -294,9 +248,9 @@ if (role === "admin") {
   document.getElementById("adminBtn").style.display = "inline-block";
 }
 
-</script>
+</script> -->
 
-<script>
+<!-- <script>
 function closeAnnouncement() {
   document.getElementById("announcement").style.display = "none";
 }
@@ -327,7 +281,90 @@ function closeAnnouncement() {
 
     playerList.appendChild(card);
   });
+</script> -->
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+const playerList = document.getElementById("playerList");
+const players = JSON.parse(localStorage.getItem("players")) || [];
+
+let batsman = 0, bowler = 0, allrounder = 0;
+
+playerList.innerHTML = "";
+
+if (players.length === 0) {
+  playerList.innerHTML = "<p style='text-align:center'>No players registered yet.</p>";
+}
+
+players.forEach(player => {
+  if (player.role === "Batsman") batsman++;
+  if (player.role === "Bowler") bowler++;
+  if (player.role === "All-Rounder") allrounder++;
+
+  const card = document.createElement("div");
+  card.className = "player-card";
+
+  card.innerHTML = `
+    <img src="${player.photo}" class="player-img">
+    <h3>${player.name}</h3>
+    <p class="mobile">📞 ${player.mobile}</p>
+    <span class="role">${player.role}</span>
+  `;
+
+  playerList.appendChild(card);
+});
+
+// COUNTS
+document.getElementById("totalCount").textContent = players.length;
+document.getElementById("batsmanCount").textContent = batsman;
+document.getElementById("bowlerCount").textContent = bowler;
+document.getElementById("allrounderCount").textContent = allrounder;
+
+// PDF DOWNLOAD
+function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
+  let y = 10;
+
+  pdf.setFontSize(16);
+  pdf.text("JP Boy's Cricketer's - Registered Players", 10, y);
+  y += 10;
+
+  players.forEach((p, i) => {
+    pdf.setFontSize(12);
+    pdf.text(`${i + 1}. ${p.name}`, 10, y);
+    y += 6;
+    pdf.text(`Mobile: ${p.mobile}`, 10, y);
+    y += 6;
+    pdf.text(`Role: ${p.role}`, 10, y);
+    y += 8;
+
+    if (p.photo && p.photo.startsWith("data:image")) {
+      pdf.addImage(p.photo, "JPEG", 140, y - 20, 30, 30);
+    }
+
+    if (y > 260) {
+      pdf.addPage();
+      y = 10;
+    }
+  });
+
+  pdf.save("registered_players.pdf");
+}
+
+// set to "admin" only for admin login
+const role = "admin"; 
+
+
+if (role === "admin") {
+  document.getElementById("adminBtn").style.display = "inline-block";
+}
+
 </script>
+
 
 
 </body>
