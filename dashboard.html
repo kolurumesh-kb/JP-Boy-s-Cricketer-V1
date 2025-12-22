@@ -6,318 +6,221 @@
 <title>JP Boy's Cricketer's Dashboard</title>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Poppins, sans-serif;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Poppins",sans-serif;
 }
 
-body {
-  background: #000;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+body{
+  background:#000;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
 }
 
-/* ===== HEADER ===== */
-header {
-  height: 60px;
-  background: linear-gradient(90deg,#1976d2,#512da8);
-  color: #fff;
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/* ================= HEADER ================= */
+header{
+  background:linear-gradient(90deg,#1976d2,#512da8);
+  color:#fff;
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:relative;
 }
 
-header h1 {
-  font-size: 20px;
-  font-weight: 700;
+header h1{
+  font-size:20px;
+  font-weight:700;
+  white-space:nowrap;
 }
 
-.header-actions {
-  display: flex;
-  gap: 12px;
+/* Desktop menu */
+.nav-links{
+  display:flex;
+  gap:12px;
 }
 
-.header-actions a {
-  background: #ffeb3b;
-  color: #000;
-  padding: 8px 16px;
-  border-radius: 20px;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 14px;
-  transition: 0.3s;
+.nav-links a{
+  background:#ffeb3b;
+  color:#000;
+  padding:7px 14px;
+  border-radius:20px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:14px;
 }
 
-.header-actions a:hover {
-  background: #ffc107;
+/* Hamburger */
+.hamburger{
+  display:none;
+  font-size:26px;
+  cursor:pointer;
 }
 
-/* ===== CAROUSEL ===== */
-.carousel {
-  flex: 1;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
+/* Mobile menu */
+.mobile-menu{
+  display:none;
+  flex-direction:column;
+  background:linear-gradient(90deg,#1976d2,#512da8);
+  position:absolute;
+  top:100%;
+  left:0;
+  width:100%;
+  padding:12px;
+  z-index:1000;
 }
 
-.carousel-track {
-  display: flex;
-  height: 100%;
-  transition: transform 1s ease-in-out;
+.mobile-menu a{
+  background:#ffeb3b;
+  color:#000;
+  padding:10px;
+  border-radius:10px;
+  text-decoration:none;
+  font-weight:600;
+  margin-bottom:8px;
+  text-align:center;
 }
 
-.carousel-track img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  flex-shrink: 0;
+/* ================= ANNOUNCEMENT ================= */
+.announcement{
+  background:linear-gradient(90deg,#ff9800,#f57c00);
+  color:#fff;
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
 }
 
-.slide {
-  position: relative;
-  min-width: 100%;
-  height: 100%;
+.marquee{
+  flex:1;
+  white-space:nowrap;
 }
 
-.slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.marquee span{
+  display:inline-block;
+  padding-left:100%;
+  animation:scroll 18s linear infinite;
 }
 
-.caption {
-  position: absolute;
-  top: 40px;          /* 👈 moved to top */
-  left: 40px;
-  background: rgba(0,0,0,0.65);
-  color: #fff;
-  padding: 16px 22px;
-  border-radius: 14px;
-  max-width: 320px;
+@keyframes scroll{
+  from{transform:translateX(0)}
+  to{transform:translateX(-100%)}
 }
 
-
-
-.caption h2 {
-  font-size: 22px;
-  margin-bottom: 6px;
+.close-announce{
+  cursor:pointer;
+  margin-left:12px;
+  font-size:18px;
 }
 
-.caption p {
-  font-size: 16px;
-  opacity: 0.9;
+/* ================= COUNTDOWN ================= */
+.announcement-bar{
+  background:linear-gradient(90deg,green,green);
+  color:#fff;
+  padding:12px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:600;
 }
 
-/* Mobile */
-@media (max-width: 600px) {
-  .caption {
-    top: 20px;        /* 👈 top on mobile */
-    left: 20px;
-    padding: 12px;
-  }
-
-  .caption h2 {
-    font-size: 18px;
-  }
-
-  .caption p {
-    font-size: 14px;
-  }
+#seasonTimer{
+  background:rgba(0,0,0,0.3);
+  padding:6px 10px;
+  border-radius:8px;
+  margin-left:6px;
 }
 
-
-
-/* ===== FOOTER ===== */
-footer {
-  height: 60px;
-  background: linear-gradient(90deg,#1976d2,#512da8);
-  color: #fff;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+.announce-close{
+  background:none;
+  border:none;
+  color:#fff;
+  font-size:18px;
+  cursor:pointer;
 }
 
-/* ===== MOBILE ===== */
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 16px;
-  }
-
-  .header-actions a {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
+/* ================= CAROUSEL ================= */
+.carousel{
+  flex:1;
+  overflow:hidden;
+  position:relative;
 }
 
-
-/* Announcement base */
-.announcement {
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  padding: 10px 16px;
-  font-weight: 600;
-  font-size: 14px;
-  color: #fff;
+.carousel-track{
+  display:flex;
+  height:100%;
+  transition:transform 1s ease;
 }
 
-/* Marquee effect */
-.marquee {
-  flex: 1;
-  overflow: hidden;
-  white-space: nowrap;
+.slide{
+  min-width:100%;
+  position:relative;
 }
 
-.marquee span {
-  display: inline-block;
-  padding-left: 100%;
-  animation: scroll 18s linear infinite;
+.slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-@keyframes scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
+.caption{
+  position:absolute;
+  top:20px;
+  left:20px;
+  background:rgba(0,0,0,0.65);
+  color:#fff;
+  padding:14px 18px;
+  border-radius:12px;
+  max-width:300px;
 }
 
-/* Close button */
-.close-announce {
-  cursor: pointer;
-  margin-left: 12px;
-  font-size: 16px;
+.caption h2{
+  font-size:20px;
 }
 
-/* Alert types */
-.announcement.info {
-  background: linear-gradient(90deg, #ff9800, #f57c00);
+.caption p{
+  font-size:14px;
 }
 
-/* .announcement.success {
-  background: linear-gradient(90deg, #4caf50, #2e7d32);
+/* ================= FOOTER ================= */
+footer{
+  background:linear-gradient(90deg,#1976d2,#512da8);
+  color:#fff;
+  font-size:13px;
+  text-align:center;
+  padding:14px;
 }
 
-.announcement.warning {
-  background: linear-gradient(90deg, #ff9800, #f57c00);
+/* ================= MOBILE ================= */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:block}
+  header h1{font-size:16px}
+
+  .caption h2{font-size:16px}
+  .caption p{font-size:13px}
 }
 
-.announcement.danger {
-  background: linear-gradient(90deg, #f44336, #c62828);
-} */
-
-.season-countdown {
-  margin: 30px auto;
-  max-width: 600px;
-  text-align: center;
-  background: linear-gradient(135deg, #ff9800, #ff5722);
-  color: #fff;
-  padding: 20px;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-}
-
-.season-countdown h1 {
-  margin-bottom: 10px;
-  font-size: 24px;
-}
-
-#seasonTimer {
-  font-size: 22px;
-  font-weight: bold;
-  background: rgba(0,0,0,0.25);
-  padding: 12px 18px;
-  border-radius: 12px;
-  display: inline-block;
-  letter-spacing: 1px;
-}
-
-/* Mobile */
-/* @media (max-width: 600px) {
-  .season-countdown h2 {
-    font-size: 20px;
-  }
-
-  #seasonTimer {
-    font-size: 18px;
-  }
-} */
 /* 
-@media (max-width: 600px) {
-  .announcement-bar {
-    font-size: 14px;
-    flex-wrap: wrap;
-    text-align: center;
-  }
-
-  #seasonTimer {
-    margin-top: 6px;
-  }
-} */
-
-
-/* .announcement-bar {
-  background: linear-gradient(90deg, #ff9800, #ff5722);
+.whatsapp-banner {
+  background: #25d366;
   color: #fff;
-  padding: 12px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  padding: 12px;
+  text-align: center;
+  font-weight: 700;
 }
 
-#seasonTimer {
-  background: rgba(0,0,0,0.3);
+.whatsapp-banner a {
+  background: #fff;
+  color: #25d366;
   padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 15px;
-  letter-spacing: 1px;
+  border-radius: 6px;
+  text-decoration: none;
+  margin-left: 10px;
 } */
-
-.announcement-bar {
-  background: linear-gradient(90deg, green, green);
-  color: #fff;
-  padding: 12px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.announce-close {
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.announce-close:hover {
-  opacity: 0.7;
-}
-
-#seasonTimer {
-  background: rgba(0,0,0,0.3);
-  padding: 6px 12px;
-  border-radius: 8px;
-  margin-left: 6px;
-}
-
-/* Mobile */
-@media (max-width: 600px) {
-  .announcement-bar {
-    flex-direction: row;
-    font-size: 14px;
-  }
-}
 
 
 </style>
@@ -325,217 +228,127 @@ footer {
 
 <body>
 
-<!-- ===== HEADER ===== -->
+<!-- HEADER -->
 <header>
   <h1>🏏 JP Boy's Cricketer's</h1>
-  <div class="header-actions">
+
+  <div class="nav-links">
     <a href="index.html">Register</a>
     <a href="owner.html">Owner's</a>
-    <a href="player.html">Player's </a>
-    <a href="schedule.html" class="btn">Schedule</a>
+    <a href="player.html">Player's</a>
+    <a href="schedule.html">Schedule</a>
+  </div>
 
-  </div> 
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Register</a>
+    <a href="owner.html">Owner's</a>
+    <a href="player.html">Player's</a>
+    <a href="schedule.html">Schedule</a>
+  </div>
 </header>
 
-<!-- Announcement Banner -->
-<div class="announcement info" id="announcement">
+<!-- <div class="whatsapp-banner">
+  📢 Get updates on WhatsApp
+  <a href="https://wa.me/917026444001" target="_blank">Join</a>
+</div> -->
+
+<!-- ANNOUNCEMENT -->
+<div class="announcement" id="announcement">
   <div class="marquee">
-    <span>
-      📢 Welcome to JP Boy's Cricketer's official site! Site is under maintenance , so don't do any registration etc...
-    </span>
+    <span>📢 Site under maintenance — images loading improved!</span>
   </div>
-  <span class="close-announce" onclick="closeAnnouncement()">✖</span>
+  <span class="close-announce" onclick="hideAnnouncement()">✖</span>
 </div>
 
-<!-- SEASON COUNTDOWN -->
-<!-- <div class="season-countdown">
-  <h1>🏏 Season-4 Starts In</h1>
-  <div id="seasonTimer">Loading...</div>
-</div> -->
-
-<!-- <div class="announcement-bar" id="seasonAnnouncement">
-  🏏 Season-4 starts in
-  <span id="seasonTimer">Loading...</span>
-</div> -->
-
+<!-- COUNTDOWN -->
 <div class="announcement-bar" id="seasonAnnouncement">
   <span>
     🏏 Season-4 starts in
     <span id="seasonTimer">Loading...</span>
   </span>
-
-  <button class="announce-close" onclick="closeAnnouncement()">✖</button>
+  <button class="announce-close" onclick="hideCountdown()">✖</button>
 </div>
 
-
-
-<!-- ===== FULL PAGE CAROUSEL ===== -->
-<!-- <div class="carousel">
-  <div class="carousel-track" id="carouselTrack">
-    <img src="images/banner1.jpg" alt="Banner 1">
-    <img src="images/banner2.jpg" alt="Banner 2">
-    <img src="images/banner3.jpg" alt="Banner 3">
-  </div>
-</div> -->
-
-<!-- ===== DASHBOARD CAROUSEL ===== -->
+<!-- CAROUSEL -->
 <div class="carousel">
   <div class="carousel-track" id="carouselTrack">
 
     <div class="slide">
-      <!-- <img src="./assets/images/banner1.jpg"> -->
-       <img src="assets/images/banner1.jpg" alt="Winners">
+      <img src="assets/images/banner1.jpg">
       <div class="caption">
-        🏆 <h2>Winners</h2>
-        <p>JP Boy's Cricketer's</p>
+        <h2>🏆 Season-3 Winners</h2>
+        <p>Spartan Stricker's</p>
       </div>
     </div>
 
     <div class="slide">
-      <!-- <img src="./assets/images/banner2.jpg"> -->
-       <img src="assets/images/banner2.jpg" alt="Runners Up">
+      <img src="assets/images/banner2.jpg">
       <div class="caption">
-        🥈 <h2>Runners Up</h2>
-        <p>Super Kings XI</p>
+        <h2>🥈 Runners-Up</h2>
+        <p>Fire Fighter's</p>
       </div>
     </div>
 
     <div class="slide">
-      <!-- <img src="./assets/images/banner3.jpg"> -->
-       <img src="assets/images/banner3.jpg" alt="Man of the Match">
+      <img src="assets/images/banner3.jpg">
       <div class="caption">
-        ⭐ <h2>Man of the Match</h2>
-        <p>Girish M</p>
+        <h2>⭐ Player of Tournament</h2>
+        <p>Kiran</p>
       </div>
     </div>
 
   </div>
 </div>
 
-
-<!-- ===== FOOTER ===== -->
 <footer>
   🏏 JP Boy's Cricketer's © 2026 | Designed by K B UMESH
 </footer>
 
 <script>
-/* ===== LEFT → RIGHT AUTO SLIDE ===== */
-const track = document.getElementById("carouselTrack");
-const slides = track.children;
-let index = 0;
+/* Carousel */
+let idx=0;
+const track=document.getElementById("carouselTrack");
+setInterval(()=>{
+  idx=(idx+1)%track.children.length;
+  track.style.transform=`translateX(-${idx*100}%)`;
+},3500);
 
-setInterval(() => {
-  index = (index + 1) % slides.length;
-  track.style.transform = `translateX(-${index * 100}%)`;
-}, 3500);
-</script>
+/* Countdown */
+const seasonStart=new Date("2026-03-15T09:00:00").getTime();
+const timer=document.getElementById("seasonTimer");
 
-<script>
-function closeAnnouncement() {
-  document.getElementById("announcement").style.display = "none";
-}
-</script>
-<!-- <script>
-  const seasonStart = new Date("2026-03-15T09:00:00").getTime();
+function updateCountdown(){
+  const now=new Date().getTime();
+  const diff=seasonStart-now;
 
-  const timer = document.getElementById("seasonTimer");
-
-  function updateSeasonCountdown() {
-    const now = new Date().getTime();
-    const diff = seasonStart - now;
-
-    if (diff <= 0) {
-      timer.innerHTML = "🔴 Season-4 is LIVE!";
-      timer.style.background = "#2e7d32";
-      return;
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    timer.innerHTML =
-      `${days}d : ${hours}h : ${minutes}m : ${seconds}s`;
-  }
-
-  updateSeasonCountdown();
-  setInterval(updateSeasonCountdown, 1000);
-</script> -->
-
-
-<!-- <script>
-  const seasonStart = new Date("2026-03-15T09:00:00").getTime();
-  const timer = document.getElementById("seasonTimer");
-
-  function updateSeasonCountdown() {
-    const now = new Date().getTime();
-    const diff = seasonStart - now;
-
-    if (diff <= 0) {
-      timer.innerHTML = "🔴 LIVE NOW";
-      document.getElementById("seasonAnnouncement").style.background =
-        "linear-gradient(90deg, #2e7d32, #43a047)";
-      return;
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    timer.innerHTML =
-      `${days}d : ${hours}h : ${minutes}m : ${seconds}s`;
-  }
-
-  updateSeasonCountdown();
-  setInterval(updateSeasonCountdown, 1000);
-</script> -->
-
-
-<script>
-const seasonStart = new Date("2026-03-15T09:00:00").getTime();
-const timer = document.getElementById("seasonTimer");
-const bar = document.getElementById("seasonAnnouncement");
-
-function updateSeasonCountdown() {
-  if (!bar || bar.style.display === "none") return;
-
-  const now = new Date().getTime();
-  const diff = seasonStart - now;
-
-  if (diff <= 0) {
-    timer.innerHTML = "🔴 LIVE NOW";
-    bar.style.background =
-      "linear-gradient(90deg, #2e7d32, #43a047)";
+  if(diff<=0){
+    timer.innerHTML="🔴 LIVE NOW";
     return;
   }
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
+  const d=Math.floor(diff/(1000*60*60*24));
+  const h=Math.floor((diff/(1000*60*60))%24);
+  const m=Math.floor((diff/(1000*60))%60);
+  const s=Math.floor((diff/1000)%60);
 
-  timer.innerHTML =
-    `${days}d : ${hours}h : ${minutes}m : ${seconds}s`;
+  timer.innerHTML=`${d}d ${h}h ${m}m ${s}s`;
 }
+setInterval(updateCountdown,1000);
+updateCountdown();
 
-updateSeasonCountdown();
-setInterval(updateSeasonCountdown, 1000);
-
-
-</script>
-
-<script>
-  function closeAnnouncement() {
-    document.getElementById("seasonAnnouncement").style.display = "none";
-    localStorage.setItem("seasonAnnouncementClosed", "true");
-  }
-
-  // On page load
-  if (localStorage.getItem("seasonAnnouncementClosed") === "true") {
-    document.getElementById("seasonAnnouncement").style.display = "none";
-  }
+/* UI helpers */
+function toggleMenu(){
+  const m=document.getElementById("mobileMenu");
+  m.style.display=m.style.display==="flex"?"none":"flex";
+}
+function hideAnnouncement(){
+  document.getElementById("announcement").style.display="none";
+}
+function hideCountdown(){
+  document.getElementById("seasonAnnouncement").style.display="none";
+}
 </script>
 
 </body>
